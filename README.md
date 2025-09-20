@@ -174,6 +174,7 @@ OPENAI_API_KEY=your_openai_api_key
 ## 📚 Documentation
 
 - [Product Documentation](./PRODUCT.md) - Detailed product strategy and roadmap
+- [Product Roadmap](./PRODUCT_ROADMAP.md) - Comprehensive development roadmap with epics, user stories, and team assignments
 - [AI/ML Components](./AI_ML_COMPONENTS.md) - Comprehensive AI engine specifications
 - [AI Workflow Diagrams](./AI_WORKFLOW_DIAGRAMS.md) - Visual system architecture and data flows
 - [API Documentation](./docs/api/) - API endpoints and integration guides
