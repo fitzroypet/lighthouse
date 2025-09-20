@@ -1,6 +1,6 @@
 # LightHouse - AI-Powered Education Platform
 
-LightHouse is a data-driven education platform that digitizes learning resources and student results, builds academic profiles over time, and uses AI to deliver personalized insights to schools, teachers, and parents in Nigeria.
+LightHouse is a data-driven education platform that digitises learning resources and student results, builds academic profiles over time, and uses AI to deliver personalised insights to schools, teachers, and parents in Nigeria.
 
 ## 🎯 Vision
 
@@ -8,7 +8,7 @@ To build the data backbone of African education, helping schools grow, teachers 
 
 ## 🚀 Project Overview
 
-This repository contains the AI engine components of the LightHouse application. The engineering and development teams will integrate these components into the full platform. The system uses PostgreSQL with vector database capabilities within the same database for efficient data management and AI-powered insights.
+This repository contains the AI engine components of the LightHouse application. The engineering and development teams will integrate these components into the full platform. The system utilises PostgreSQL, which incorporates vector database capabilities within the same database, enabling efficient data management and AI-powered insights.
 
 ## 🏗️ Architecture
 
@@ -41,7 +41,7 @@ This repository contains the AI engine components of the LightHouse application.
 ### Phase 3: AI Features (Oct 2025)
 - 📋 RAG data pipeline
 - 📋 Conversational assistant
-- 📋 Personalized learning suggestions
+- 📋 Personalised learning suggestions
 
 ### Phase 4: Scale (Dec/Jan 2026)
 - 📋 Multi-school onboarding
@@ -57,7 +57,7 @@ This repository contains the AI engine components of the LightHouse application.
 
 ### Database Setup
 
-1. **Initialize the database schema:**
+1. **Initialise the database schema:**
    ```bash
    psql -U your_username -d your_database -f lighthouse_erd_schema.sql
    ```
@@ -95,14 +95,14 @@ OPENAI_API_KEY=your_openai_api_key
 - **assessment_weight**: Flexible assessment weighting per class/subject
 
 ### AI & Analytics
-- **behaviour_skill**: JSONB storage for behavioral and skills assessment
+- **behaviour_skill**: JSONB storage for behavioural and skills assessment
 - Vector embeddings for curriculum content and student data
 
 ## 🎯 Key Features
 
 ### For School Administrators
 - Bulk import of students, parents, and enrollments
-- Class and subject configuration for Nigerian curriculum
+- Class and subject configuration for the Nigerian curriculum
 - Teacher assignment management
 - Comprehensive dashboards and analytics
 
@@ -121,14 +121,14 @@ OPENAI_API_KEY=your_openai_api_key
 ### For Students
 - Digital learning material access
 - Academic history and development tracking
-- Personalized learning suggestions
+- Personalised learning suggestions
 
 ## 🤖 AI Capabilities
 
 ### RAG (Retrieval-Augmented Generation)
 - Integration of results data with curriculum content
 - Contextual insights based on student performance
-- Personalized learning recommendations
+- Personalised learning recommendations
 
 ### Conversational Assistant
 - Parent-facing beta for academic guidance
@@ -195,7 +195,7 @@ For questions about the AI engine components or database schema, please contact 
 
 ## 📄 License
 
-[Add your license information here]
+MIT License
 
 ---
 
