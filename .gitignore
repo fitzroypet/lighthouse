@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment files
+*.env
+.env
+.env.*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Logs / data
+*.log
+
+# Local notebooks checkpoints
+.ipynb_checkpoints/
+
+# CrewAI local storage
+crewai_storage/

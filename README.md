@@ -6,197 +6,188 @@ LightHouse is a data-driven education platform that digitises learning resources
 
 To build the data backbone of African education, helping schools grow, teachers teach better, and parents feel empowered.
 
-## 🚀 Project Overview
+## 🧭 Platform Overview
 
-This repository contains the AI engine components of the LightHouse application. The engineering and development teams will integrate these components into the full platform. The system utilises PostgreSQL, which incorporates vector database capabilities within the same database, enabling efficient data management and AI-powered insights.
+This repository hosts the AI engine for LightHouse. The wider product teams embed these services into the full learning platform so schools can manage students, parents, and classrooms while benefiting from AI insights. PostgreSQL with pgvector powers both transactional storage and retrieval-augmented generation in a single stack.
 
-## 🏗️ Architecture
+## 🏗️ Architecture Highlights
 
-### Database Schema
-- **PostgreSQL**: Primary database with vector extensions for AI capabilities
-- **Schema**: Comprehensive ERD covering Nigerian 6-3-3 education system
-- **Vector Support**: Built-in vector database for RAG (Retrieval-Augmented Generation) and embeddings
+- **PostgreSQL ERD** covering Nigeria's 6-3-3 education system with read-only roles and RLS
+- **Vector-backed RAG pipeline** for curriculum-aware responses and embeddings
+- **CrewAI agents** (Teacher, Parent, Orchestrator) orchestrated through the Lighthouse MCP tools
+- **FastAPI backend** exposing REST + SSE endpoints secured with JWTs
 
-### Key Components
-- Student management and academic tracking
-- Teacher assignment and result entry systems
-- Parent portal for real-time access
-- AI insights and conversational assistant
-- Comprehensive reporting and analytics
+## 🛣️ Roadmap Snapshot
 
-## 📋 Current Status
+- **Phase 1 – MVP (Aug/Sept 2025):** Schema design, bulk import flows, class/subject setup, result entry, student profiles
+- **Phase 2 – Parent & Insights (Sept/Oct 2025):** Parent portal, dashboards, automated performance updates
+- **Phase 3 – AI Features (Oct 2025):** RAG pipeline, conversational assistant, personalised learning suggestions
+- **Phase 4 – Scale (Dec/Jan 2026):** Multi-school onboarding, government/NGO reporting, strategic partnerships
 
-### Phase 1: MVP (Aug/Sept 2025)
-- ✅ Database schema design
-- 🔄 Bulk student/parent import system
-- 📋 Class & subject configuration
-- 📋 Result entry forms
-- 📋 Student profile management
+## 🏗️ Current Project Structure
 
-### Phase 2: Parent & Insights (Sept/Oct 2025)
-- 📋 Parent portal development
-- 📋 Summary dashboards
-- 📋 Automated performance updates
-
-### Phase 3: AI Features (Oct 2025)
-- 📋 RAG data pipeline
-- 📋 Conversational assistant
-- 📋 Personalised learning suggestions
-
-### Phase 4: Scale (Dec/Jan 2026)
-- 📋 Multi-school onboarding
-- 📋 Government & NGO reporting
-- 📋 Strategic partnerships
-
-## 🛠️ Development Setup
-
-### Prerequisites
-- PostgreSQL 13+ with vector extensions
-- Python 3.9+
-- Node.js 16+ (for frontend components)
-
-### Database Setup
-
-1. **Initialise the database schema:**
-   ```bash
-   psql -U your_username -d your_database -f lighthouse_erd_schema.sql
-   ```
-
-2. **Enable vector extensions (if not already enabled):**
-   ```sql
-   CREATE EXTENSION IF NOT EXISTS vector;
-   ```
-
-### Environment Configuration
-
-Create a `.env` file in the project root:
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/lighthouse
-VECTOR_EMBEDDING_MODEL=text-embedding-ada-002
-OPENAI_API_KEY=your_openai_api_key
+```
+/Users/petgrave/lighthouse/
+├── 📋 docs/                           # Project documentation & roadmaps
+│   ├── README.md                      # Detailed product documentation
+│   ├── PRODUCT.md                     # Product strategy and roadmap
+│   ├── PRODUCT_ROADMAP.md             # Development roadmap
+│   ├── AI_ML_COMPONENTS.md            # AI engine specifications
+│   └── AI_WORKFLOW_DIAGRAMS.md        # System architecture diagrams
+├── 🗄️ schema/                         # Database schema assets
+│   └── lighthouse_erd_schema.sql      # Main ERD schema
+├── 🔧 backend/                        # FastAPI + CrewAI implementation
+│   ├── app.py                         # API application entrypoint
+│   ├── requirements.txt               # Python dependencies
+│   ├── README.md                      # Backend-specific documentation
+│   ├── env/                           # Environment configuration templates
+│   │   └── .env.example
+│   ├── lighthouse_mcp/                # Model Context Protocol server
+│   │   └── lighthouse_mcp_server.py
+│   ├── crew/                          # CrewAI demonstration scripts
+│   │   └── crewai_mcp_example.py
+│   └── sql/                           # Database setup & RAG scripts
+│       ├── 01_rag_schema.sql
+│       ├── 02_agent_views_and_functions.sql
+│       ├── 03_readonly_role.sql
+│       └── 04_rls_policies.sql
+└── LICENSE                            # Project licence
 ```
 
-## 📊 Database Schema Overview
+## 🚀 Quick Start
 
-### Core Entities
-- **school**: School information and configuration
-- **app_user**: Users with role-based access (admin, teacher, parent)
-- **class**: Academic classes following Nigerian 6-3-3 system
-- **subject**: Subjects taught in each class
-- **student**: Student profiles and academic history
+### 1. Create and activate the virtualenv
 
-### Curriculum Hierarchy
-- **theme**: Subject themes and modules
-- **topic**: Individual topics with learning outcomes and coverage tracking
+```bash
+python3.10 -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+```
 
-### Assessment & Results
-- **result**: CA1, CA2, and exam scores with automated totals
-- **grading_scheme**: Configurable grading systems (WAEC-compliant)
-- **assessment_weight**: Flexible assessment weighting per class/subject
+### 2. Configure environment variables
 
-### AI & Analytics
-- **behaviour_skill**: JSONB storage for behavioural and skills assessment
-- Vector embeddings for curriculum content and student data
+```bash
+cd backend
+cp env/.env.example .env  # one-time setup
+# edit .env with your Neon URLs, JWT secret, and API keys
+set -a && source .env && set +a  # load vars into the current shell
+```
 
-## 🎯 Key Features
+Run `echo $DATABASE_URL_RO` to confirm the value is available before starting any services.
 
-### For School Administrators
-- Bulk import of students, parents, and enrollments
-- Class and subject configuration for the Nigerian curriculum
-- Teacher assignment management
-- Comprehensive dashboards and analytics
+### 3. Apply database schema (first-time only)
 
-### For Teachers
-- Easy result entry with spreadsheet support
-- Student progress tracking
-- Resource upload and management
-- Predictive alerts for at-risk students
+```bash
+psql "$DATABASE_URL" -f ../schema/lighthouse_erd_schema.sql
+psql "$DATABASE_URL" -f sql/01_rag_schema.sql
+psql "$DATABASE_URL" -f sql/02_agent_views_and_functions.sql
+psql "$DATABASE_URL" -f sql/03_readonly_role.sql
+psql "$DATABASE_URL" -f sql/04_rls_policies.sql
+```
 
-### For Parents
-- Real-time access to results and teacher remarks
-- SMS notifications for low-connectivity areas
-- AI-powered insights and recommendations
-- Historical performance tracking
+### 4. Run the FastAPI backend
 
-### For Students
-- Digital learning material access
-- Academic history and development tracking
-- Personalised learning suggestions
+```bash
+cd backend
+set -a && source .env && set +a  # reload after opening a new shell
+uvicorn app:app --reload --port 8001
+```
 
-## 🤖 AI Capabilities
+The API lives at `http://127.0.0.1:8001` (adjust the port if 8001 is busy).
 
-### RAG (Retrieval-Augmented Generation)
-- Integration of results data with curriculum content
-- Contextual insights based on student performance
-- Personalised learning recommendations
+### 5. Run the CrewAI example locally
 
-### Conversational Assistant
-- Parent-facing beta for academic guidance
-- Teacher support for student assessment
-- Predictive analytics for early intervention
+```bash
+cd backend
+set -a && source .env && set +a
+python crew/crewai_mcp_example.py
+```
 
-### Vector Database Integration
-- Efficient storage and retrieval of embeddings
-- Semantic search across curriculum and student data
-- Real-time insights generation
+You will see verbose logs from the orchestrator, teacher, and parent agents followed by the teacher's final summary.
 
-## 📈 Roadmap & Milestones
+## 🎯 Current Implementation Status
 
-### Immediate Priorities (P0)
-- [ ] Bulk import system for students/parents/enrollments
-- [ ] Class & subject configuration UI
-- [ ] Result entry forms with spreadsheet ingestion
-- [ ] Auto totals & WAEC grading
-- [ ] Parent portal development
+### ✅ Completed
+- **Database Schema**: Complete ERD with Nigerian 6-3-3 education system
+- **MCP Server**: Model Context Protocol server with safe database tools
+- **CrewAI Agents**: Multi-agent system with Teacher, Parent, and Orchestrator personas
+- **FastAPI Backend**: REST API with JWT authentication and streaming
+- **Security**: Row-level security policies and read-only database role
+- **Vector Database**: pgvector integration for RAG capabilities
 
-### Short-term Goals (P1)
-- [ ] Data validators & error reporting
-- [ ] SMS notification pipeline
-- [ ] RAG data pipeline
-- [ ] Conversational assistant
-- [ ] Early-warning prediction models
+### 🔄 In Progress
+- **RAG Content Population**: Adding curriculum and help documentation
+- **Embedding Provider**: OpenAI integration for vector embeddings
+- **Frontend Development**: Web interface for agent interaction
 
-### Long-term Vision (P2)
-- [ ] Multi-school setup & permissions
-- [ ] NGO/Government reporting modules
-- [ ] Billing & subscription management
-- [ ] Advanced analytics and insights
+### 📋 Next Steps
+- **Data Population**: Add sample curriculum and student data
+- **API Testing**: Comprehensive testing of all endpoints
+- **Frontend**: Build web interface for parents, teachers, and students
+- **Deployment**: Production deployment setup
 
 ## 🔧 Technical Stack
 
-- **Database**: PostgreSQL with vector extensions
-- **Backend**: Python (FastAPI/Django)
-- **Frontend**: React/Next.js
-- **AI/ML**: OpenAI API, vector embeddings
-- **Deployment**: Docker, AWS/Azure
-- **Monitoring**: Comprehensive logging and analytics
+- **Backend**: FastAPI + Python 3.10
+- **Database**: PostgreSQL with pgvector
+- **AI Framework**: CrewAI with MCP integration
+- **Authentication**: JWT-based security
+- **Vector Search**: pgvector for embeddings
+- **API**: RESTful with Server-Sent Events streaming
 
-## 📚 Documentation
+## 📚 API Endpoints
 
-- [Product Documentation](./PRODUCT.md) - Detailed product strategy and roadmap
-- [Product Roadmap](./PRODUCT_ROADMAP.md) - Comprehensive development roadmap with epics, user stories, and team assignments
-- [AI/ML Components](./AI_ML_COMPONENTS.md) - Comprehensive AI engine specifications
-- [AI Workflow Diagrams](./AI_WORKFLOW_DIAGRAMS.md) - Visual system architecture and data flows
-- [API Documentation](./docs/api/) - API endpoints and integration guides
-- [Database Schema](./lighthouse_erd_schema.sql) - Complete ERD with comments
+- `GET /` - Health check
+- `POST /chat` - Chat with AI agents
+- `POST /chat/stream` - Streaming chat responses
+- `GET /docs` - Interactive API documentation
 
-## 🤝 Contributing
+## 🤖 AI Agents
 
-This project is currently in active development. For integration with the main application:
+The system includes three specialized AI personas:
 
-1. Review the database schema and ensure compatibility
-2. Test AI engine components in isolation
-3. Follow the established data models for consistency
-4. Coordinate with the main development team for integration
+1. **Teacher Agent**: Helps with lesson planning, student assessment, and academic guidance
+2. **Parent Agent**: Provides insights on student progress and learning recommendations
+3. **Orchestrator Agent**: Coordinates between agents and manages complex queries
+
+## 🔒 Security Features
+
+- **Row-Level Security (RLS)**: Database-level access control
+- **Read-Only Role**: Separate database role for agents
+- **JWT Authentication**: Secure API access
+- **Parameterized Queries**: SQL injection prevention
+
+## 📖 Documentation
+
+- [Backend Documentation](./backend/README.md) - Backend setup and API details
+- [Product Documentation](./docs/PRODUCT.md) - Product strategy and roadmap
+- [AI Components](./docs/AI_ML_COMPONENTS.md) - AI engine specifications
+- [Database Schema](./schema/lighthouse_erd_schema.sql) - Complete ERD
+
+## 🛠️ Development
+
+### Prerequisites
+- Python 3.10+ (use the provided virtualenv instructions)
+- PostgreSQL 13+ with pgvector extension
+- Neon database account (or local PostgreSQL)
+
+### Environment Variables
+```env
+DATABASE_URL=postgresql://user:pass@host/db
+DATABASE_URL_RO=postgresql://ro_user:pass@host/db
+JWT_SECRET=your-jwt-secret
+OPENAI_API_KEY=your-openai-key  # Optional
+```
 
 ## 📞 Support
 
-For questions about the AI engine components or database schema, please contact the development team or refer to the product documentation.
+For questions about the implementation or integration, refer to the documentation in the `docs/` directory or check the backend README for technical details.
 
 ## 📄 License
 
 MIT License
+See [LICENSE](./LICENSE) for license information.
 
 ---
 
-**Note**: This repository contains the AI engine components of LightHouse. The full application integration will be handled by the engineering and development teams.
+**Status**: ✅ **Fully Operational** - The LightHouse MCP Agent system is ready for development and testing!

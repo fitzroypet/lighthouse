@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pyjwt
+mcp[cli]
+psycopg[binary]
+pydantic
+crewai
+crewai-tools[mcp]
+matplotlib
+openai>=1.0.0
+pytest

@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS class (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL, -- e.g., 'Primary 4', 'JSS2', 'SS3'
   academic_year TEXT NOT NULL, -- e.g., '2025/2026'
-  term term_enum NOT NULL,
+  term term_enum,
   school_id BIGINT NOT NULL REFERENCES school(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT now()
 );
